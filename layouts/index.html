@@ -1,0 +1,47 @@
+{{ define "main" }}
+  <section class="hero" id="home">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">We are</p>
+        <h1>Researching AI that can see it, say it, and sort it.</h1>
+        <p class="lead">
+          From perception to understanding to action.
+        </p>
+        <div class="body-copy">
+          {{ .Content }}
+        </div>
+        <div class="hero-actions">
+          <a class="button-primary" href="{{ "/posts/" | relURL }}">View Posts</a>
+          <a class="button-secondary" href="{{ site.Params.github }}" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="dot-grid" data-grid
+             data-images="/images/face.jpg,/images/multimodal.jpg,/images/camera.jpg"
+             aria-label="Animated research visualization"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="posts">
+    <div class="wrap">
+      {{ $posts := where site.RegularPages.ByDate.Reverse "Section" "posts" }}
+      <div class="posts-section-header">
+        <div class="posts-section-title-row">
+          <h2 class="posts-section-title">Latest Posts</h2>
+          <span class="posts-section-line" aria-hidden="true"></span>
+        </div>
+        <a class="posts-all-link" href="{{ "/posts/" | relURL }}">view all</a>
+      </div>
+      {{ if gt (len $posts) 0 }}
+        <div class="posts-list">
+          {{ range first 3 $posts }}
+            {{ partial "post-list-item.html" . }}
+          {{ end }}
+        </div>
+      {{ else }}
+        <p class="posts-empty">No posts yet. Add entries under `content/posts/` to populate this section.</p>
+      {{ end }}
+    </div>
+  </section>
+{{ end }}

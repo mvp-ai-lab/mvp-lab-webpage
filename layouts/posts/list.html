@@ -1,0 +1,15 @@
+{{ define "main" }}
+  <section class="section posts-page">
+    <div class="wrap">
+      {{ if gt (len .Pages) 0 }}
+        <div class="posts-list">
+          {{ range .Pages.ByDate.Reverse }}
+            {{ partial "post-list-item.html" . }}
+          {{ end }}
+        </div>
+      {{ else }}
+        <p class="posts-empty">No posts yet. Add entries under `content/posts/` to populate this page.</p>
+      {{ end }}
+    </div>
+  </section>
+{{ end }}

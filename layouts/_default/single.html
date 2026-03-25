@@ -1,0 +1,11 @@
+{{ define "main" }}
+  <section class="section">
+    <div class="wrap prose">
+      <h1>{{ .Title }}</h1>
+      {{ with .Params.github }}
+        <p><a href="{{ . }}" target="_blank" rel="noreferrer">GitHub</a></p>
+      {{ end }}
+      {{ .Content }}
+    </div>
+  </section>
+{{ end }}

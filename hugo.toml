@@ -1,0 +1,9 @@
+baseURL = "https://example.org/"
+languageCode = "en-us"
+title = "MVP Lab"
+disableKinds = ["RSS", "taxonomy", "term"]
+
+[params]
+description = "A minimal Hugo homepage for the lab."
+email = "hello@example.org"
+github = "https://github.com/mvp-ai-lab"

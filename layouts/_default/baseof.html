@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} | {{ site.Title }}{{ end }}</title>
+    <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ "css/site.css" | relURL }}">
+  </head>
+  <body>
+    <div class="page-grid" aria-hidden="true"></div>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="{{ "/" | relURL }}" aria-label="{{ site.Title }}">
+          <span class="brand-lockup">
+            <span class="brand-terminal-line">
+              <span class="brand-prompt">$</span>
+              <span class="brand-command">MVP_LAB</span>
+              <span class="brand-cursor" aria-hidden="true"></span>
+            </span>
+            <span class="brand-subtitle">mobile vision perception</span>
+          </span>
+        </a>
+        <nav class="site-nav" aria-label="Primary">
+          <a href="{{ "/" | relURL }}">Home</a>
+          <a href="{{ "/posts/" | relURL }}">Posts</a>
+          <a href="{{ "/projects/" | relURL }}">Projects</a>
+          <a href="{{ "/about/" | relURL }}">About</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      {{ block "main" . }}{{ end }}
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <div class="footer-panel">
+          <div class="footer-brand-block">
+            <p class="footer-kicker">MVP Lab</p>
+            <p class="footer-title">Mobile Vision Perception</p>
+            <p class="footer-copy">From perception to understanding to action.</p>
+          </div>
+          <div class="footer-links" aria-label="Footer">
+            <a href="{{ "/" | relURL }}">Home</a>
+            <a href="{{ "/posts/" | relURL }}">Posts</a>
+            <a href="{{ "/projects/" | relURL }}">Projects</a>
+            <a href="{{ "/about/" | relURL }}">About</a>
+            <a href="{{ site.Params.github }}" target="_blank" rel="noreferrer">GitHub</a>
+          </div>
+          <div class="footer-meta">
+            <p>&copy; {{ now.Year }} {{ site.Title }}</p>
+            <p>Built with Hugo</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="{{ "js/grid.js" | relURL }}" defer></script>
+  </body>
+</html>

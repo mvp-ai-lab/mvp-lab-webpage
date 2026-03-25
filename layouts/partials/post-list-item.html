@@ -1,0 +1,44 @@
+{{ $thumb := .Params.thumb | default "face" }}
+{{ $thumbnail := .Params.thumbnail }}
+<article class="post-card">
+  <div class="post-card-thumb post-card-thumb--{{ $thumb }}" aria-hidden="true">
+    {{ if $thumbnail }}
+      <img class="post-card-image" src="{{ $thumbnail | relURL }}" alt="">
+    {{ end }}
+    <span class="post-card-badge">{{ .Date.Format "02 Jan 2006" }}</span>
+    <div class="post-card-visual">
+      {{ if not $thumbnail }}
+      {{ if eq $thumb "face" }}
+        <span class="face-outline"></span>
+        <span class="face-eye face-eye-left"></span>
+        <span class="face-eye face-eye-right"></span>
+        <span class="face-mouth"></span>
+      {{ else if eq $thumb "multimodal" }}
+        <span class="multi-frame"></span>
+        <span class="multi-peak multi-peak-1"></span>
+        <span class="multi-peak multi-peak-2"></span>
+        <span class="multi-peak multi-peak-3"></span>
+        <span class="multi-bubble"></span>
+        <span class="multi-bubble-line multi-bubble-line-1"></span>
+        <span class="multi-bubble-line multi-bubble-line-2"></span>
+      {{ else if eq $thumb "camera" }}
+        <span class="camera-phone"></span>
+        <span class="camera-lens"></span>
+        <span class="camera-lens-inner"></span>
+        <span class="camera-ray camera-ray-1"></span>
+        <span class="camera-ray camera-ray-2"></span>
+        <span class="camera-ray camera-ray-3"></span>
+      {{ end }}
+      {{ end }}
+    </div>
+    <p class="post-card-meta">{{ .Params.topic | default "Research Note" }}</p>
+  </div>
+  <div class="post-card-copy">
+    <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+    <p>{{ .Params.summary | default .Summary }}</p>
+    <div class="post-actions">
+      <a class="button-primary" href="{{ .RelPermalink }}">Read</a>
+      <a class="button-secondary" href="{{ .Params.github | default site.Params.github }}" target="_blank" rel="noreferrer">GitHub</a>
+    </div>
+  </div>
+</article>

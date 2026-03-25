@@ -1,0 +1,59 @@
+{{ define "main" }}
+  <section class="section projects-page">
+    <div class="wrap">
+      <div class="projects-page-header">
+        <p class="eyebrow">OUR LAB's</p>
+        <h1>{{ .Title }}</h1>
+        {{ with .Description }}<p class="lead">{{ . }}</p>{{ end }}
+      </div>
+      {{ if gt (len .Pages) 0 }}
+        <div class="card-grid projects-grid">
+          {{ range .Pages.ByDate.Reverse }}
+            {{ $thumb := .Params.thumb | default "face" }}
+            {{ $thumbnail := .Params.thumbnail }}
+            <article class="card project-card">
+              <div class="project-card-thumb post-card-thumb--{{ $thumb }}" aria-hidden="true">
+                {{ if $thumbnail }}
+                  <img class="project-card-image" src="{{ $thumbnail | relURL }}" alt="">
+                {{ end }}
+                <div class="project-card-visual">
+                  {{ if not $thumbnail }}
+                  {{ if eq $thumb "face" }}
+                    <span class="face-outline"></span>
+                    <span class="face-eye face-eye-left"></span>
+                    <span class="face-eye face-eye-right"></span>
+                    <span class="face-mouth"></span>
+                  {{ else if eq $thumb "multimodal" }}
+                    <span class="multi-frame"></span>
+                    <span class="multi-peak multi-peak-1"></span>
+                    <span class="multi-peak multi-peak-2"></span>
+                    <span class="multi-peak multi-peak-3"></span>
+                    <span class="multi-bubble"></span>
+                    <span class="multi-bubble-line multi-bubble-line-1"></span>
+                    <span class="multi-bubble-line multi-bubble-line-2"></span>
+                  {{ else if eq $thumb "camera" }}
+                    <span class="camera-phone"></span>
+                    <span class="camera-lens"></span>
+                    <span class="camera-lens-inner"></span>
+                    <span class="camera-ray camera-ray-1"></span>
+                    <span class="camera-ray camera-ray-2"></span>
+                    <span class="camera-ray camera-ray-3"></span>
+                  {{ end }}
+                  {{ end }}
+                </div>
+              </div>
+              <p class="project-card-meta">{{ .Params.topic | default "Project" }}</p>
+              <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+              <p>{{ .Params.summary | default .Summary }}</p>
+              <div class="project-actions">
+                <a class="button-secondary" href="{{ .Params.github | default site.Params.github }}" target="_blank" rel="noreferrer">GitHub</a>
+              </div>
+            </article>
+          {{ end }}
+        </div>
+      {{ else }}
+        <p class="projects-empty">No projects yet. Add entries under `content/projects/` to populate this page.</p>
+      {{ end }}
+    </div>
+  </section>
+{{ end }}
