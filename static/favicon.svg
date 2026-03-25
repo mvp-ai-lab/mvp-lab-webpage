@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#f6f5f2"/>
+  <text x="8" y="43" font-family="Geist Mono,SFMono-Regular,Menlo,monospace" font-size="24" font-weight="800" letter-spacing="-0.04em" fill="#111">MVP</text>
+  <rect x="52" y="22" width="4" height="22" rx="1" fill="#111">
+    <animate attributeName="opacity" values="1;1;0;0" dur="1.2s" repeatCount="indefinite"/>
+  </rect>
+</svg>
