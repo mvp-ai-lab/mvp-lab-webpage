@@ -1,4 +1,44 @@
 {{ define "main" }}
+  {{ $themeVariant := index site.Params "themeVariant" | default (index site.Params "themevariant") | default "" }}
+  {{ $style := index site.Params "openaiStyle" | default (index site.Params "openaistyle") | default dict }}
+  {{ $isOpenAI := eq $themeVariant "openai" }}
+  {{ if $isOpenAI }}
+  <section class="openai-section projects-page">
+    <div class="wrap">
+      <div class="openai-section-header">
+        <p>Projects</p>
+        <h1>{{ .Title }}</h1>
+        {{ with .Description }}<p>{{ . }}</p>{{ end }}
+      </div>
+      {{ if gt (len .Pages) 0 }}
+        <div class="openai-card-grid">
+          {{ range .Pages.ByDate.Reverse }}
+            {{ $thumbnail := .Params.thumbnail }}
+            {{ $slug := "" }}
+            {{ with .File }}{{ $slug = .BaseFileName }}{{ end }}
+            {{ $thumbnailOverrides := index $style "thumbnails" | default dict }}
+            {{ $thumbnail = index $thumbnailOverrides $slug | default $thumbnail }}
+            <article class="openai-card">
+              {{ if $thumbnail }}
+                <a class="openai-card-image-link" href="{{ .RelPermalink }}" aria-label="{{ .Title }}">
+                  <img class="openai-card-image" src="{{ $thumbnail | relURL }}" alt="">
+                </a>
+              {{ end }}
+              <div class="openai-card-copy">
+                <p class="openai-card-meta">{{ .Params.topic | default "Project" }}</p>
+                <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+                <p>{{ .Params.summary | default .Summary }}</p>
+                <a class="openai-card-link" href="{{ .Params.github | default site.Params.github }}" target="_blank" rel="noreferrer">GitHub</a>
+              </div>
+            </article>
+          {{ end }}
+        </div>
+      {{ else }}
+        <p class="projects-empty">No projects yet. Add entries under `content/projects/` to populate this page.</p>
+      {{ end }}
+    </div>
+  </section>
+  {{ else }}
   <section class="section projects-page">
     <div class="wrap">
       <div class="projects-page-header">
@@ -56,4 +96,5 @@
       {{ end }}
     </div>
   </section>
+  {{ end }}
 {{ end }}

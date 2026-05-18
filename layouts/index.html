@@ -1,4 +1,161 @@
 {{ define "main" }}
+  {{ $themeVariant := index site.Params "themeVariant" | default (index site.Params "themevariant") | default "" }}
+  {{ $style := index site.Params "openaiStyle" | default (index site.Params "openaistyle") | default dict }}
+  {{ $isOpenAI := eq $themeVariant "openai" }}
+  {{ if $isOpenAI }}
+  {{ $heroBackground := index $style "heroBackground" | default (index $style "herobackground") }}
+  <section class="openai-hero" id="home"{{ with $heroBackground }} style="--openai-hero-bg: url('{{ . | relURL }}');"{{ end }}>
+    <div class="wrap openai-hero-wrap">
+      <h1>{{ index $style "heroTitle" | default (index $style "herotitle") | default .Title }}</h1>
+      <form class="openai-hero-search" data-openai-search role="search">
+        <label class="sr-only" for="openai-hero-search-input">Search content</label>
+        <div class="openai-search-input-shell">
+          <input id="openai-hero-search-input" type="search" name="q" autocomplete="off">
+          {{ $suggestions := index $style "searchSuggestions" | default (index $style "searchsuggestions") | default (slice "mvp-dataset" "mvp-orbit" "codec-patch-stream") }}
+          <div class="openai-search-suggestions" aria-hidden="true">
+            {{ range $suggestions }}
+              <span>{{ . }}</span>
+            {{ end }}
+          </div>
+        </div>
+        <button type="submit" aria-label="Search">
+          <span aria-hidden="true">↑</span>
+        </button>
+      </form>
+      {{ with site.Params.github }}
+        <a class="button-primary openai-hero-github" href="{{ . }}" target="_blank" rel="noreferrer">GitHub</a>
+      {{ end }}
+    </div>
+  </section>
+  {{ $searchItems := slice }}
+  {{ range site.RegularPages }}
+    {{ if or (eq .Section "posts") (eq .Section "projects") }}
+      {{ $slug := "" }}
+      {{ with .File }}{{ $slug = .BaseFileName }}{{ end }}
+      {{ $rank := 2 }}
+      {{ if eq .Section "posts" }}{{ $rank = 1 }}{{ end }}
+      {{ $searchItems = $searchItems | append (dict "rank" $rank "section" .Section "slug" $slug "summary" (.Params.summary | default .Summary) "title" .Title "url" .RelPermalink) }}
+    {{ end }}
+  {{ end }}
+  <script type="application/json" id="openai-search-index">{{ $searchItems | jsonify | safeHTML }}</script>
+  <script>
+    (() => {
+      const form = document.querySelector("[data-openai-search]");
+      const indexNode = document.getElementById("openai-search-index");
+      if (!form || !indexNode) return;
+
+      let items = [];
+      try {
+        const parsed = JSON.parse(indexNode.textContent || "[]");
+        items = typeof parsed === "string" ? JSON.parse(parsed) : parsed;
+      } catch {
+        items = [];
+      }
+
+      const input = form.querySelector("input");
+      const suggestions = Array.from(form.querySelectorAll(".openai-search-suggestions span"));
+      let suggestionIndex = 0;
+      let suggestionTimer;
+
+      const syncSuggestionState = () => {
+        form.classList.toggle("has-value", Boolean(input.value.trim()));
+      };
+
+      const showSuggestion = (index) => {
+        if (!suggestions.length) return;
+        suggestions.forEach((suggestion, currentIndex) => {
+          suggestion.classList.toggle("is-active", currentIndex === index);
+        });
+      };
+
+      if (suggestions.length) {
+        showSuggestion(0);
+        suggestionTimer = window.setInterval(() => {
+          suggestionIndex = (suggestionIndex + 1) % suggestions.length;
+          showSuggestion(suggestionIndex);
+        }, 2400);
+      }
+
+      const normalize = (value) => String(value || "")
+        .toLowerCase()
+        .trim()
+        .replace(/['"]/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+
+      const searchableText = (item) => normalize([
+        item.slug,
+        item.title,
+        item.section,
+        item.summary
+      ].join(" "));
+
+      const scoreItem = (item, query) => {
+        const slug = normalize(item.slug);
+        const title = normalize(item.title);
+        const text = searchableText(item);
+        const rankOffset = Number(item.rank || 9) * 10;
+
+        if (slug === query) return rankOffset;
+        if (title === query) return rankOffset + 1;
+        if (slug.startsWith(query)) return rankOffset + 2;
+        if (title.includes(query)) return rankOffset + 3;
+        if (text.includes(query)) return rankOffset + 4;
+        return Infinity;
+      };
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const query = normalize(input.value);
+        form.classList.remove("is-empty", "is-missing");
+
+        if (!query) {
+          form.classList.add("is-empty");
+          input.focus();
+          return;
+        }
+
+        const match = items
+          .map((item) => ({ item, score: scoreItem(item, query) }))
+          .filter((result) => Number.isFinite(result.score))
+          .sort((a, b) => a.score - b.score)[0];
+
+        if (!match) {
+          form.classList.add("is-missing");
+          input.focus();
+          return;
+        }
+
+        window.location.href = match.item.url;
+      });
+
+      input.addEventListener("input", () => {
+        form.classList.remove("is-empty", "is-missing");
+        syncSuggestionState();
+      });
+
+      syncSuggestionState();
+    })();
+  </script>
+
+  <section class="openai-section" id="posts">
+    <div class="wrap">
+      {{ $posts := where site.RegularPages.ByDate.Reverse "Section" "posts" }}
+      <div class="openai-section-header openai-section-header-simple">
+        <h2>{{ index $style "postsTitle" | default (index $style "poststitle") | default "Research notes and build logs" }}</h2>
+      </div>
+      {{ if gt (len $posts) 0 }}
+        <div class="openai-card-grid">
+          {{ range first 3 $posts }}
+            {{ partial "post-list-item.html" . }}
+          {{ end }}
+        </div>
+      {{ else }}
+        <p class="posts-empty">No posts yet. Add entries under `content/posts/` to populate this section.</p>
+      {{ end }}
+    </div>
+  </section>
+  {{ else }}
   <section class="hero" id="home">
     <div class="wrap hero-grid">
       <div class="hero-copy">
@@ -44,4 +201,5 @@
       {{ end }}
     </div>
   </section>
+  {{ end }}
 {{ end }}

@@ -1,5 +1,27 @@
 {{ $thumb := .Params.thumb | default "face" }}
 {{ $thumbnail := .Params.thumbnail }}
+{{ $themeVariant := index site.Params "themeVariant" | default (index site.Params "themevariant") | default "" }}
+{{ $style := index site.Params "openaiStyle" | default (index site.Params "openaistyle") | default dict }}
+{{ $isOpenAI := eq $themeVariant "openai" }}
+{{ if $isOpenAI }}
+{{ $slug := "" }}
+{{ with .File }}{{ $slug = .BaseFileName }}{{ end }}
+{{ $thumbnailOverrides := index $style "thumbnails" | default dict }}
+{{ $thumbnail = index $thumbnailOverrides $slug | default $thumbnail }}
+<article class="openai-card">
+  {{ if $thumbnail }}
+    <a class="openai-card-image-link" href="{{ .RelPermalink }}" aria-label="{{ .Title }}">
+      <img class="openai-card-image" src="{{ $thumbnail | relURL }}" alt="">
+    </a>
+  {{ end }}
+  <div class="openai-card-copy">
+    <p class="openai-card-meta">{{ .Params.topic | default "Research Note" }}</p>
+    <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+    <p>{{ .Params.summary | default .Summary }}</p>
+    <a class="openai-card-link" href="{{ .RelPermalink }}">Read more</a>
+  </div>
+</article>
+{{ else }}
 <article class="post-card">
   <div class="post-card-thumb post-card-thumb--{{ $thumb }}" aria-hidden="true">
     {{ if $thumbnail }}
@@ -42,3 +64,4 @@
     </div>
   </div>
 </article>
+{{ end }}

@@ -34,6 +34,18 @@ a {
   color: inherit;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .wrap {
   width: min(1350px, calc(100% - 3rem));
   margin: 0 auto;
@@ -1043,5 +1055,673 @@ h2 {
   .footer-meta {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+.theme-openai {
+  --bg: #ffffff;
+  --panel: #ffffff;
+  --panel-alt: #f7f7f5;
+  --text: #0d0d0d;
+  --muted: #5f5f5f;
+  --accent: #0d0d0d;
+  --border: rgba(13, 13, 13, 0.12);
+  --shadow: 0 18px 50px rgba(13, 13, 13, 0.08);
+  font-family: "Inter", "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+}
+
+.theme-openai .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  margin-top: 0;
+  background: rgba(255, 255, 255, 0.88);
+  border-bottom: 1px solid rgba(13, 13, 13, 0.08);
+  backdrop-filter: blur(18px);
+}
+
+.theme-openai .site-header .wrap {
+  min-height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 0;
+  background: transparent;
+}
+
+.theme-openai .brand {
+  min-height: auto;
+  gap: 0.6rem;
+  padding: 0;
+  border: 0;
+  color: var(--text);
+  font-weight: 650;
+  letter-spacing: 0;
+}
+
+.theme-openai .brand-lockup {
+  font-family: "Geist Mono", "SFMono-Regular", "SF Mono", "Cascadia Mono", "Menlo", "Monaco", "Consolas", monospace;
+}
+
+.theme-openai .brand-terminal-line {
+  gap: 0.35rem;
+}
+
+.theme-openai .brand-prompt,
+.theme-openai .brand-command {
+  font-size: 1.1rem;
+}
+
+.theme-openai .brand-subtitle {
+  margin-left: 1.5rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.theme-openai .site-nav {
+  min-height: auto;
+  padding: 0;
+  gap: clamp(1rem, 2vw, 1.9rem);
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-transform: none;
+}
+
+.theme-openai .site-nav a::after {
+  bottom: -0.28rem;
+}
+
+.theme-openai .wrap {
+  width: min(1180px, calc(100% - 3rem));
+}
+
+.openai-hero {
+  position: relative;
+  min-height: calc(100vh - 68px);
+  display: flex;
+  align-items: center;
+  padding: 5.5rem 0 4rem;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.22)),
+    var(--openai-hero-bg);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.openai-hero-wrap {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.openai-hero h1 {
+  max-width: 850px;
+  margin: 0;
+  font-size: clamp(3rem, 8vw, 6.7rem);
+  line-height: 0.96;
+  letter-spacing: -0.06em;
+  font-weight: 650;
+}
+
+.openai-hero-search {
+  width: min(100%, 1080px);
+  min-height: 122px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 4rem;
+  padding: 1.2rem 1rem 1.2rem 1.9rem;
+  border: 1px solid #d6d6d6;
+  border-radius: 42px;
+  background: #fefefe;
+  box-shadow:
+    0 1px 2px rgba(13, 13, 13, 0.05),
+    0 8px 26px rgba(13, 13, 13, 0.055);
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.openai-hero-search:focus-within {
+  border-color: #c9c9c9;
+  box-shadow:
+    0 1px 2px rgba(13, 13, 13, 0.06),
+    0 10px 30px rgba(13, 13, 13, 0.065);
+}
+
+.openai-hero-search.is-empty,
+.openai-hero-search.is-missing {
+  border-color: #b8b8b8;
+}
+
+.openai-search-input-shell {
+  position: relative;
+  min-width: 0;
+  min-height: 4.2rem;
+}
+
+.openai-hero-search input {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+  width: 100%;
+  min-height: 4.2rem;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #5f5f5f;
+  font: inherit;
+  font-size: clamp(1.35rem, 2vw, 1.9rem);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.openai-search-suggestions {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.openai-search-suggestions span {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  color: #777777;
+  font-size: clamp(1.35rem, 2vw, 1.9rem);
+  font-weight: 400;
+  letter-spacing: 0;
+  opacity: 0;
+  transform: translateY(calc(-50% + 0.7rem));
+  transition:
+    opacity 420ms ease,
+    transform 420ms ease;
+}
+
+.openai-search-suggestions span.is-active {
+  opacity: 1;
+  transform: translateY(-50%);
+}
+
+.openai-hero-search.has-value .openai-search-suggestions,
+.openai-hero-search:focus-within .openai-search-suggestions {
+  opacity: 0;
+}
+
+.openai-hero-search button {
+  width: 66px;
+  height: 66px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 999px;
+  background: #f4f4f4;
+  color: #8a8a8a;
+  cursor: pointer;
+  font: inherit;
+  font-size: 2.1rem;
+  line-height: 1;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.openai-hero-search button:hover,
+.openai-hero-search button:focus-visible {
+  background: #eeeeee;
+  color: #707070;
+  transform: translateY(-1px);
+}
+
+.openai-hero-search button span {
+  transform: translateY(-0.08em);
+}
+
+.openai-hero-github {
+  margin-top: 3.1rem;
+}
+
+.theme-openai .button-primary.openai-hero-github {
+  min-height: 56px;
+  padding: 0.72rem 1.45rem;
+  border: 1px solid #dddddd;
+  border-radius: 999px;
+  background: #fdfdfd;
+  color: #6a6a6a;
+  font-size: clamp(1.15rem, 1.85vw, 1.5rem);
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 1px 2px rgba(13, 13, 13, 0.06),
+    0 5px 14px rgba(13, 13, 13, 0.06);
+}
+
+.theme-openai .button-primary.openai-hero-github:hover,
+.theme-openai .button-primary.openai-hero-github:focus-visible {
+  background: #ffffff;
+  color: #5f5f5f;
+  border-color: #d8d8d8;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 1px 2px rgba(13, 13, 13, 0.07),
+    0 7px 18px rgba(13, 13, 13, 0.075);
+}
+
+.theme-openai .button-primary,
+.theme-openai .button-secondary {
+  min-height: 42px;
+  padding: 0.62rem 1rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: none;
+  box-shadow: none;
+}
+
+.theme-openai .button-primary {
+  background: var(--text);
+  color: #ffffff;
+}
+
+.theme-openai .button-secondary {
+  background: #f1f1ef;
+  color: var(--text);
+  border: 1px solid transparent;
+}
+
+.theme-openai .button-primary::after,
+.theme-openai .button-secondary::after {
+  content: none;
+}
+
+.theme-openai .button-primary:hover,
+.theme-openai .button-primary:focus-visible,
+.theme-openai .button-secondary:hover,
+.theme-openai .button-secondary:focus-visible {
+  transform: translateY(-1px);
+}
+
+.theme-openai .button-secondary:hover,
+.theme-openai .button-secondary:focus-visible {
+  background: #e8e8e5;
+}
+
+.openai-section {
+  padding: 5rem 0;
+  border-top: 1px solid rgba(13, 13, 13, 0.09);
+}
+
+.openai-section-header {
+  display: grid;
+  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.4fr) auto;
+  gap: 1.5rem;
+  align-items: start;
+  margin-bottom: 2rem;
+}
+
+.openai-section-header-simple {
+  display: block;
+  margin-bottom: 1.35rem;
+}
+
+.openai-section-header p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.openai-section-header h1,
+.openai-section-header h2 {
+  max-width: 720px;
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.7rem);
+  line-height: 1;
+  letter-spacing: -0.055em;
+  font-weight: 650;
+}
+
+.openai-section-header-simple h2 {
+  max-width: none;
+  font-size: clamp(1.45rem, 2vw, 2rem);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  font-weight: 650;
+  text-align: left;
+}
+
+.openai-section-header a {
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.openai-section-header a:hover,
+.openai-section-header a:focus-visible {
+  text-decoration: underline;
+}
+
+.openai-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.openai-card {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(13, 13, 13, 0.09);
+  border-radius: 18px;
+  background: #ffffff;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.openai-card:hover,
+.openai-card:focus-within {
+  transform: translateY(-3px);
+  border-color: rgba(13, 13, 13, 0.16);
+  box-shadow: 0 18px 45px rgba(13, 13, 13, 0.08);
+}
+
+.openai-card-image-link {
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #eeeeeb;
+}
+
+.openai-card-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 220ms ease;
+}
+
+.openai-card:hover .openai-card-image {
+  transform: scale(1.025);
+}
+
+.openai-card-copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 1.2rem;
+}
+
+.openai-card-meta {
+  margin: 0 0 0.9rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.openai-card h3 {
+  margin: 0;
+  font-size: clamp(1.2rem, 1.8vw, 1.55rem);
+  line-height: 1.12;
+  letter-spacing: -0.035em;
+  font-weight: 650;
+}
+
+.openai-card h3 a {
+  text-decoration: none;
+}
+
+.openai-card h3 a:hover,
+.openai-card h3 a:focus-visible {
+  text-decoration: underline;
+}
+
+.openai-card-copy > p:not(.openai-card-meta) {
+  margin: 0.85rem 0 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.openai-card-link {
+  margin-top: auto;
+  padding-top: 1.1rem;
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.openai-card-link:hover,
+.openai-card-link:focus-visible {
+  text-decoration: underline;
+}
+
+.theme-openai .posts-page,
+.theme-openai .projects-page {
+  padding-top: 5rem;
+}
+
+.theme-openai .posts-list,
+.theme-openai .card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.theme-openai .project-card {
+  overflow: hidden;
+  gap: 0;
+  border-radius: 18px;
+  background: #ffffff;
+}
+
+.theme-openai .project-card-thumb {
+  min-height: 230px;
+  margin: -1.5rem -1.5rem 1.2rem;
+}
+
+.theme-openai .project-card h3 {
+  font-size: 1.35rem;
+  line-height: 1.15;
+  letter-spacing: -0.035em;
+}
+
+.theme-openai .project-actions .button-secondary {
+  width: auto;
+}
+
+.theme-openai .prose {
+  max-width: 780px;
+  padding-top: 2rem;
+}
+
+.theme-openai .prose h1 {
+  font-size: clamp(2.6rem, 6vw, 5.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.06em;
+}
+
+.theme-openai .site-footer {
+  padding: 4rem 0 2rem;
+  background: #0d0d0d;
+  color: #ffffff;
+}
+
+.theme-openai .site-footer .wrap {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.openai-footer-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) repeat(2, minmax(140px, 0.4fr));
+  gap: 2rem;
+}
+
+.openai-footer-brand .brand {
+  color: #ffffff;
+}
+
+.openai-footer-brand p {
+  max-width: 420px;
+  margin: 1rem 0 0;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.95rem;
+}
+
+.openai-footer-title {
+  margin: 0 0 0.9rem;
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.openai-footer-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.openai-footer-group a {
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+
+.openai-footer-group a:hover,
+.openai-footer-group a:focus-visible {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.openai-footer-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.82rem;
+}
+
+.openai-footer-meta p {
+  margin: 0;
+}
+
+@media (max-width: 980px) {
+  .openai-card-grid,
+  .theme-openai .posts-list,
+  .theme-openai .card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .openai-section-header {
+    grid-template-columns: 1fr;
+  }
+
+  .openai-footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .theme-openai .wrap {
+    width: min(100%, calc(100% - 1.5rem));
+  }
+
+  .theme-openai .site-header .wrap {
+    min-height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 0;
+  }
+
+  .theme-openai .site-nav {
+    width: 100%;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 0.1rem;
+  }
+
+  .openai-hero {
+    min-height: auto;
+    padding: 5rem 0 4rem;
+  }
+
+  .openai-hero h1 {
+    font-size: clamp(2.7rem, 14vw, 4.2rem);
+  }
+
+  .openai-hero-search {
+    min-height: 92px;
+    gap: 0.65rem;
+    margin-top: 2.7rem;
+    padding: 0.8rem 0.8rem 0.8rem 1.1rem;
+    border-radius: 30px;
+  }
+
+  .openai-search-input-shell,
+  .openai-hero-search input {
+    min-height: 3.2rem;
+  }
+
+  .openai-hero-search input,
+  .openai-search-suggestions span {
+    font-size: 1.05rem;
+  }
+
+  .openai-hero-search button {
+    width: 50px;
+    height: 50px;
+    font-size: 1.65rem;
+  }
+
+  .theme-openai .button-primary,
+  .theme-openai .button-secondary {
+    width: 100%;
+  }
+
+  .theme-openai .openai-hero-github {
+    width: auto;
+    max-width: 100%;
+  }
+
+  .openai-section {
+    padding: 3.5rem 0;
+  }
+
+  .openai-card-grid,
+  .theme-openai .posts-list,
+  .theme-openai .card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .openai-footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .openai-footer-meta {
+    flex-direction: column;
   }
 }

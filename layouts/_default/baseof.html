@@ -1,18 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+{{ $themeVariant := index site.Params "themeVariant" | default (index site.Params "themevariant") | default "" }}
+{{ $style := index site.Params "openaiStyle" | default (index site.Params "openaistyle") | default dict }}
+{{ $isOpenAI := eq $themeVariant "openai" }}
+<html lang="{{ site.Language.LanguageCode | default "en" }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} | {{ site.Title }}{{ end }}</title>
     <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}">
     <link rel="icon" type="image/svg+xml" href="{{ "favicon.svg" | relURL }}">
+    {{ if $isOpenAI }}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+    {{ else }}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+    {{ end }}
     <link rel="stylesheet" href="{{ "css/site.css" | relURL }}">
   </head>
-  <body>
+  <body class="{{ if $isOpenAI }}theme-openai{{ else }}theme-default{{ end }}">
+    {{ if not $isOpenAI }}
     <div class="page-grid" aria-hidden="true"></div>
+    {{ end }}
     <header class="site-header">
       <div class="wrap">
         <a class="brand" href="{{ "/" | relURL }}" aria-label="{{ site.Title }}">
@@ -26,10 +38,22 @@
           </span>
         </a>
         <nav class="site-nav" aria-label="Primary">
+          {{ if $isOpenAI }}
+            {{ range (index $style "nav") }}
+              {{ $url := .url }}
+              {{ $external := or (hasPrefix $url "http") (hasPrefix $url "mailto:") }}
+              <a href="{{ if $external }}{{ $url }}{{ else }}{{ $url | relURL }}{{ end }}">{{ .label }}</a>
+            {{ else }}
+              <a href="{{ "/posts/" | relURL }}">Research</a>
+              <a href="{{ "/projects/" | relURL }}">Projects</a>
+              <a href="{{ "/about/" | relURL }}">Company</a>
+            {{ end }}
+          {{ else }}
           <a href="{{ "/" | relURL }}">Home</a>
           <a href="{{ "/posts/" | relURL }}">Posts</a>
           <a href="{{ "/projects/" | relURL }}">Projects</a>
           <a href="{{ "/about/" | relURL }}">About</a>
+          {{ end }}
         </nav>
       </div>
     </header>
@@ -40,6 +64,38 @@
 
     <footer class="site-footer">
       <div class="wrap">
+        {{ if $isOpenAI }}
+        <div class="openai-footer-grid">
+          <div class="openai-footer-brand">
+            <a class="brand" href="{{ "/" | relURL }}" aria-label="{{ site.Title }}">
+              <span class="brand-lockup">
+                <span class="brand-terminal-line">
+                  <span class="brand-prompt">$</span>
+                  <span class="brand-command">MVP_LAB</span>
+                  <span class="brand-cursor" aria-hidden="true"></span>
+                </span>
+                <span class="brand-subtitle">mobile vision perception</span>
+              </span>
+            </a>
+            <p>{{ index $style "footerIntro" | default (index $style "footerintro") | default site.Params.description }}</p>
+          </div>
+          <div class="openai-footer-group">
+            <p class="openai-footer-title">MVP Lab</p>
+            <a href="{{ "/projects/" | relURL }}">Projects</a>
+            <a href="{{ "/posts/" | relURL }}">Posts</a>
+            <a href="{{ "/about/" | relURL }}">About</a>
+          </div>
+          <div class="openai-footer-group">
+            <p class="openai-footer-title">Connect</p>
+            <a href="{{ site.Params.github }}" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="mailto:{{ site.Params.email }}">Email</a>
+          </div>
+        </div>
+        <div class="openai-footer-meta">
+          <p>&copy; {{ now.Year }} {{ site.Title }}</p>
+          <p>Built with Hugo</p>
+        </div>
+        {{ else }}
         <div class="footer-panel">
           <div class="footer-brand-block">
             <p class="footer-kicker">MVP Lab</p>
@@ -58,8 +114,11 @@
             <p>Built with Hugo</p>
           </div>
         </div>
+        {{ end }}
       </div>
     </footer>
+    {{ if not $isOpenAI }}
     <script src="{{ "js/grid.js" | relURL }}" defer></script>
+    {{ end }}
   </body>
 </html>

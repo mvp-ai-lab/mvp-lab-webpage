@@ -1,0 +1,43 @@
+baseURL = "https://example.org/"
+languageCode = "en-us"
+title = "MVP Lab"
+disableKinds = ["RSS", "taxonomy", "term"]
+
+[params]
+description = "Research, people, and projects from MVP Lab."
+email = "hello@example.org"
+github = "https://github.com/mvp-ai-lab"
+themeVariant = "openai"
+
+[params.openaiStyle]
+heroTitle = "What can MVP Lab help build?"
+heroBackground = "/images/background.png"
+postsTitle = "Latest Posts"
+footerIntro = "Researching mobile vision perception systems, datasets, and AI tooling."
+
+searchSuggestions = [
+  "mvp-dataset",
+  "mvp-orbit",
+  "codec-patch-stream"
+]
+
+[params.openaiStyle.thumbnails]
+"mvp-dataset" = "/images/art/0000.png"
+"mvp-orbit" = "/images/art/0001.png"
+"codec-patch-stream" = "/images/art/0002.png"
+
+[[params.openaiStyle.nav]]
+label = "Home"
+url = "/"
+
+[[params.openaiStyle.nav]]
+label = "Posts"
+url = "/posts/"
+
+[[params.openaiStyle.nav]]
+label = "Projects"
+url = "/projects/"
+
+[[params.openaiStyle.nav]]
+label = "About"
+url = "/about/"
