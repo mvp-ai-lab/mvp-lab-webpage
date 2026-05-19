@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-{{ $themeVariant := index site.Params "themeVariant" | default (index site.Params "themevariant") | default "" }}
 {{ $style := index site.Params "labStyle" | default (index site.Params "labstyle") | default dict }}
-{{ $isLab := eq $themeVariant "lab" }}
 <html lang="{{ site.Language.Lang | default "en" }}">
   <head>
     <meta charset="utf-8">
@@ -16,10 +14,7 @@
     <link rel="stylesheet" href="{{ "css/site.css" | relURL }}">
     <script src="{{ "pagefind/pagefind-component-ui.js" | relURL }}" type="module"></script>
   </head>
-  <body class="{{ if $isLab }}theme-lab{{ else }}theme-default{{ end }}">
-    {{ if not $isLab }}
-    <div class="page-grid" aria-hidden="true"></div>
-    {{ end }}
+  <body class="theme-lab">
     <header class="site-header">
       <div class="wrap">
         <a class="brand" href="{{ "/" | relURL }}" aria-label="{{ site.Title }}">
@@ -32,19 +27,25 @@
           </span>
         </a>
         <nav class="site-nav" aria-label="Primary">
-          {{ if $isLab }}
-            {{ range (index $style "nav") }}
+          {{ range (index $style "nav") }}
+            {{ if ne .label "GitHub" }}
               {{ $url := .url }}
               {{ $external := or (hasPrefix $url "http") (hasPrefix $url "mailto:") }}
               <a href="{{ if $external }}{{ $url }}{{ else }}{{ $url | relURL }}{{ end }}">{{ .label }}</a>
-            {{ else }}
-              <a href="{{ "/posts/" | relURL }}">Research</a>
-              <a href="{{ "/about/" | relURL }}">Company</a>
             {{ end }}
           {{ else }}
-          <a href="{{ "/" | relURL }}">Home</a>
-          <a href="{{ "/posts/" | relURL }}">Posts</a>
-          <a href="{{ "/about/" | relURL }}">About</a>
+            <a href="{{ "/" | relURL }}">Home</a>
+            <a href="{{ "/posts/" | relURL }}">Posts</a>
+            <a href="{{ "/about/" | relURL }}">About</a>
+          {{ end }}
+          {{ range (index $style "nav") }}
+            {{ if eq .label "GitHub" }}
+              {{ $url := .url }}
+              {{ $external := or (hasPrefix $url "http") (hasPrefix $url "mailto:") }}
+              <a href="{{ if $external }}{{ $url }}{{ else }}{{ $url | relURL }}{{ end }}">{{ .label }}</a>
+            {{ end }}
+          {{ else }}
+            <a href="{{ site.Params.github }}" target="_blank" rel="noreferrer">GitHub</a>
           {{ end }}
           <pagefind-searchbox class="site-search" placeholder="Search" max-results="6"></pagefind-searchbox>
         </nav>
@@ -57,7 +58,6 @@
 
     <footer class="site-footer">
       <div class="wrap">
-        {{ if $isLab }}
         <div class="lab-footer-grid">
           <div class="lab-footer-brand">
             <a class="brand" href="{{ "/" | relURL }}" aria-label="{{ site.Title }}">
@@ -85,29 +85,7 @@
           <p>&copy; {{ now.Year }} {{ site.Title }}</p>
           <p>Built with Hugo</p>
         </div>
-        {{ else }}
-        <div class="footer-panel">
-          <div class="footer-brand-block">
-            <p class="footer-kicker">MVP Lab</p>
-            <p class="footer-title">Mobile Vision Perception</p>
-            <p class="footer-copy">From perception to understanding to action.</p>
-          </div>
-          <div class="footer-links" aria-label="Footer">
-            <a href="{{ "/" | relURL }}">Home</a>
-            <a href="{{ "/posts/" | relURL }}">Posts</a>
-            <a href="{{ "/about/" | relURL }}">About</a>
-            <a href="{{ site.Params.github }}" target="_blank" rel="noreferrer">GitHub</a>
-          </div>
-          <div class="footer-meta">
-            <p>&copy; {{ now.Year }} {{ site.Title }}</p>
-            <p>Built with Hugo</p>
-          </div>
-        </div>
-        {{ end }}
       </div>
     </footer>
-    {{ if not $isLab }}
-    <script src="{{ "js/grid.js" | relURL }}" defer></script>
-    {{ end }}
   </body>
 </html>
