@@ -2,7 +2,7 @@
 {{ $themeVariant := index site.Params "themeVariant" | default (index site.Params "themevariant") | default "" }}
 {{ $style := index site.Params "labStyle" | default (index site.Params "labstyle") | default dict }}
 {{ $isLab := eq $themeVariant "lab" }}
-<html lang="{{ site.Language.LanguageCode | default "en" }}">
+<html lang="{{ site.Language.Lang | default "en" }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
