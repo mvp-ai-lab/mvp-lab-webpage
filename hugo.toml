@@ -6,9 +6,6 @@ disableKinds = ["RSS", "taxonomy", "term", "taxonomyTerm"]
 [markup.goldmark.renderer]
 unsafe = true
 
-[markup.goldmark.renderer]
-unsafe = true
-
 [params]
 description = "Research notes and build logs from MVP Lab."
 email = "contact@mvp-lab.ai"

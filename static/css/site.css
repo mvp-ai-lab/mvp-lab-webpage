@@ -840,20 +840,20 @@ h2 {
   }
 
   .lab-feature-grid {
-    grid-auto-rows: 92px;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
+    grid-auto-rows: 76px;
+    grid-template-columns: 1fr;
+    gap: 1.45rem;
   }
 
   .lab-feature-tile-1 {
-    grid-column: span 2;
-    grid-row: span 3;
+    grid-column: span 1;
+    grid-row: span 4;
   }
 
   .lab-feature-tile-2,
   .lab-feature-tile-3 {
     grid-column: span 1;
-    grid-row: span 2;
+    grid-row: span 3;
   }
 
   .lab-feature-tile {
@@ -865,15 +865,21 @@ h2 {
   }
 
   .lab-feature-title-row {
-    padding-top: 0.7rem;
-    gap: 0.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-top: 0.72rem;
+    gap: 0.42rem;
   }
 
   .lab-feature-title {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    line-height: 1.22;
   }
 
   .lab-feature-tag {
+    order: -1;
+    align-self: flex-start;
     font-size: 0.62rem;
   }
 
