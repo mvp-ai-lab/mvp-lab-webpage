@@ -1,7 +1,7 @@
 baseURL = "https://example.org/"
 languageCode = "en-us"
 title = "MVP Lab"
-disableKinds = ["RSS", "taxonomy", "term"]
+disableKinds = ["RSS", "taxonomy", "term", "taxonomyTerm"]
 
 [markup.goldmark.renderer]
 unsafe = true
