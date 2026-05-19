@@ -38,7 +38,6 @@
             <a href="{{ "/posts/" | relURL }}">Posts</a>
             <a href="{{ "/about/" | relURL }}">About</a>
           {{ end }}
-          <pagefind-searchbox class="site-search" placeholder="Search" max-results="6"></pagefind-searchbox>
           {{ range (index $style "nav") }}
             {{ if eq .label "GitHub" }}
               {{ $url := .url }}
@@ -48,6 +47,7 @@
           {{ else }}
             <a href="{{ site.Params.github }}" target="_blank" rel="noreferrer">GitHub</a>
           {{ end }}
+          <pagefind-searchbox class="site-search" placeholder="Search" max-results="6"></pagefind-searchbox>
         </nav>
       </div>
     </header>
