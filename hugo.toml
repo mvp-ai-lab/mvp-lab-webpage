@@ -10,7 +10,6 @@ unsafe = true
 description = "Research notes and build logs from MVP Lab."
 email = "contact@mvp-lab.ai"
 github = "https://github.com/mvp-ai-lab"
-themeVariant = "lab"
 
 [params.labStyle]
 postsTitle = "Latest Posts"

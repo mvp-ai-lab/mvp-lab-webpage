@@ -1,8 +1,8 @@
 {{ define "main" }}
-  <section class="section posts-page">
+  <section class="lab-section posts-page">
     <div class="wrap">
       {{ if gt (len .Pages) 0 }}
-        <div class="posts-list">
+        <div class="lab-card-grid">
           {{ range .Pages.ByDate.Reverse }}
             {{ partial "post-list-item.html" . }}
           {{ end }}

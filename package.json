@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "hugo --cleanDestinationDir",
+    "build": "hugo --cleanDestinationDir && pagefind --site public",
     "build:search": "hugo --cleanDestinationDir && pagefind --site public",
     "serve:search": "hugo --cleanDestinationDir && pagefind --site public --serve"
   },
