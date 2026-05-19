@@ -840,27 +840,28 @@ h2 {
   }
 
   .lab-feature-grid {
-    grid-auto-rows: 76px;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 1.45rem;
   }
 
-  .lab-feature-tile-1 {
-    grid-column: span 1;
-    grid-row: span 4;
-  }
-
+  .lab-feature-tile-1,
   .lab-feature-tile-2,
   .lab-feature-tile-3 {
-    grid-column: span 1;
-    grid-row: span 3;
+    grid-column: auto;
+    grid-row: auto;
   }
 
   .lab-feature-tile {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
     overflow: visible;
   }
 
   .lab-feature-tile img {
+    height: auto;
+    aspect-ratio: 16 / 10;
     border-radius: 10px;
   }
 
