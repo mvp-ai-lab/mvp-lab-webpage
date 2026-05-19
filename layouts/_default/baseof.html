@@ -28,14 +28,26 @@
         </a>
         <nav class="site-nav" aria-label="Primary">
           {{ range (index $style "nav") }}
-            {{ $url := .url }}
-            {{ $external := or (hasPrefix $url "http") (hasPrefix $url "mailto:") }}
-            <a href="{{ if $external }}{{ $url }}{{ else }}{{ $url | relURL }}{{ end }}">{{ .label }}</a>
+            {{ if ne .label "GitHub" }}
+              {{ $url := .url }}
+              {{ $external := or (hasPrefix $url "http") (hasPrefix $url "mailto:") }}
+              <a href="{{ if $external }}{{ $url }}{{ else }}{{ $url | relURL }}{{ end }}">{{ .label }}</a>
+            {{ end }}
           {{ else }}
+            <a href="{{ "/" | relURL }}">Home</a>
             <a href="{{ "/posts/" | relURL }}">Posts</a>
             <a href="{{ "/about/" | relURL }}">About</a>
           {{ end }}
           <pagefind-searchbox class="site-search" placeholder="Search" max-results="6"></pagefind-searchbox>
+          {{ range (index $style "nav") }}
+            {{ if eq .label "GitHub" }}
+              {{ $url := .url }}
+              {{ $external := or (hasPrefix $url "http") (hasPrefix $url "mailto:") }}
+              <a href="{{ if $external }}{{ $url }}{{ else }}{{ $url | relURL }}{{ end }}">{{ .label }}</a>
+            {{ end }}
+          {{ else }}
+            <a href="{{ site.Params.github }}" target="_blank" rel="noreferrer">GitHub</a>
+          {{ end }}
         </nav>
       </div>
     </header>
