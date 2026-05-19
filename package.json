@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "build": "hugo --cleanDestinationDir",
+    "build:search": "hugo --cleanDestinationDir && pagefind --site public",
+    "serve:search": "hugo --cleanDestinationDir && pagefind --site public --serve"
+  },
+  "devDependencies": {
+    "pagefind": "^1.5.2"
+  }
+}

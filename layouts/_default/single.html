@@ -1,9 +1,35 @@
 {{ define "main" }}
   <section class="section">
     <div class="wrap prose">
+      <p class="article-meta">
+        <span>{{ .Params.topic | default "Research Note" }}</span>
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
+      </p>
       <h1>{{ .Title }}</h1>
-      {{ with .Params.github }}
-        <p><a href="{{ . }}" target="_blank" rel="noreferrer">GitHub</a></p>
+      {{ with .Params.thumbnail }}
+        <img class="article-thumbnail" src="{{ . | relURL }}" alt="">
+      {{ end }}
+      {{ if or .Params.github .Params.website .Params.paper }}
+        <p class="article-actions">
+          {{ with .Params.github }}
+            <a class="article-resource-link" href="{{ . }}" target="_blank" rel="noreferrer">
+              <span>GitHub</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          {{ end }}
+          {{ with .Params.website }}
+            <a class="article-resource-link" href="{{ . }}" target="_blank" rel="noreferrer">
+              <span>Website</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          {{ end }}
+          {{ with .Params.paper }}
+            <a class="article-resource-link" href="{{ . }}" target="_blank" rel="noreferrer">
+              <span>Paper</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          {{ end }}
+        </p>
       {{ end }}
       {{ .Content }}
     </div>
