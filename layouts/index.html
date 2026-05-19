@@ -1,4 +1,49 @@
 {{ define "main" }}
+  {{ $themeVariant := index site.Params "themeVariant" | default (index site.Params "themevariant") | default "" }}
+  {{ $style := index site.Params "labStyle" | default (index site.Params "labstyle") | default dict }}
+  {{ $isLab := eq $themeVariant "lab" }}
+  {{ if $isLab }}
+  {{ $posts := where site.RegularPages.ByDate.Reverse "Section" "posts" }}
+  {{ $featuredPosts := first 3 (where $posts "Params.featured" true) }}
+  {{ if gt (len $featuredPosts) 0 }}
+  <section class="lab-feature-wall" aria-label="Featured work">
+    <div class="wrap">
+      <div class="lab-feature-grid">
+        {{ range $index, $page := $featuredPosts }}
+          {{ $title := or (index $page.Params "featured_title") $page.Title }}
+          {{ $tag := or (index $page.Params "featured_tag") $page.Params.topic }}
+          {{ $image := or (index $page.Params "featured_image") $page.Params.thumbnail }}
+          {{ $class := printf "lab-feature-tile lab-feature-tile-%d" (add $index 1) }}
+          <a class="{{ $class }}" href="{{ $page.RelPermalink }}" aria-label="{{ $title }}">
+            {{ with $image }}<img src="{{ . | relURL }}" alt="">{{ end }}
+            <span class="lab-feature-title-row">
+              <span class="lab-feature-title">{{ $title }}</span>
+              {{ with $tag }}<span class="lab-feature-tag">{{ . }}</span>{{ end }}
+            </span>
+          </a>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+  {{ end }}
+
+  <section class="lab-section" id="posts">
+    <div class="wrap">
+      <div class="lab-section-header lab-section-header-simple">
+        <h2>{{ index $style "postsTitle" | default (index $style "poststitle") | default "Research notes and build logs" }}</h2>
+      </div>
+      {{ if gt (len $posts) 0 }}
+        <div class="lab-card-grid">
+          {{ range first 3 $posts }}
+            {{ partial "post-list-item.html" . }}
+          {{ end }}
+        </div>
+      {{ else }}
+        <p class="posts-empty">No posts yet. Add entries under `content/posts/` to populate this section.</p>
+      {{ end }}
+    </div>
+  </section>
+  {{ else }}
   <section class="hero" id="home">
     <div class="wrap hero-grid">
       <div class="hero-copy">
@@ -44,4 +89,5 @@
       {{ end }}
     </div>
   </section>
+  {{ end }}
 {{ end }}

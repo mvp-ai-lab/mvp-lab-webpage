@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+{{ $themeVariant := index site.Params "themeVariant" | default (index site.Params "themevariant") | default "" }}
+{{ $style := index site.Params "labStyle" | default (index site.Params "labstyle") | default dict }}
+{{ $isLab := eq $themeVariant "lab" }}
+<html lang="{{ site.Language.LanguageCode | default "en" }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,28 +11,42 @@
     <link rel="icon" type="image/svg+xml" href="{{ "favicon.svg" | relURL }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link href="{{ "pagefind/pagefind-component-ui.css" | relURL }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ "css/site.css" | relURL }}">
+    <script src="{{ "pagefind/pagefind-component-ui.js" | relURL }}" type="module"></script>
   </head>
-  <body>
+  <body class="{{ if $isLab }}theme-lab{{ else }}theme-default{{ end }}">
+    {{ if not $isLab }}
     <div class="page-grid" aria-hidden="true"></div>
+    {{ end }}
     <header class="site-header">
       <div class="wrap">
         <a class="brand" href="{{ "/" | relURL }}" aria-label="{{ site.Title }}">
+          <img class="brand-logo" src="{{ "images/logo.png" | relURL }}" alt="" aria-hidden="true">
           <span class="brand-lockup">
             <span class="brand-terminal-line">
-              <span class="brand-prompt">$</span>
-              <span class="brand-command">MVP_LAB</span>
-              <span class="brand-cursor" aria-hidden="true"></span>
+              <span class="brand-command">MVP Lab</span>
             </span>
-            <span class="brand-subtitle">mobile vision perception</span>
+            <span class="brand-subtitle">Mobile vision perception research lab</span>
           </span>
         </a>
         <nav class="site-nav" aria-label="Primary">
+          {{ if $isLab }}
+            {{ range (index $style "nav") }}
+              {{ $url := .url }}
+              {{ $external := or (hasPrefix $url "http") (hasPrefix $url "mailto:") }}
+              <a href="{{ if $external }}{{ $url }}{{ else }}{{ $url | relURL }}{{ end }}">{{ .label }}</a>
+            {{ else }}
+              <a href="{{ "/posts/" | relURL }}">Research</a>
+              <a href="{{ "/about/" | relURL }}">Company</a>
+            {{ end }}
+          {{ else }}
           <a href="{{ "/" | relURL }}">Home</a>
           <a href="{{ "/posts/" | relURL }}">Posts</a>
-          <a href="{{ "/projects/" | relURL }}">Projects</a>
           <a href="{{ "/about/" | relURL }}">About</a>
+          {{ end }}
+          <pagefind-searchbox class="site-search" placeholder="Search" max-results="6"></pagefind-searchbox>
         </nav>
       </div>
     </header>
@@ -40,6 +57,35 @@
 
     <footer class="site-footer">
       <div class="wrap">
+        {{ if $isLab }}
+        <div class="lab-footer-grid">
+          <div class="lab-footer-brand">
+            <a class="brand" href="{{ "/" | relURL }}" aria-label="{{ site.Title }}">
+              <span class="brand-lockup">
+                <span class="brand-terminal-line">
+                  <span class="brand-command">MVP Lab</span>
+                </span>
+                <span class="brand-subtitle">Mobile vision perception research lab</span>
+              </span>
+            </a>
+            <p>{{ index $style "footerIntro" | default (index $style "footerintro") | default site.Params.description }}</p>
+          </div>
+          <div class="lab-footer-group">
+            <p class="lab-footer-title">MVP Lab</p>
+            <a href="{{ "/posts/" | relURL }}">Posts</a>
+            <a href="{{ "/about/" | relURL }}">About</a>
+          </div>
+          <div class="lab-footer-group">
+            <p class="lab-footer-title">Connect</p>
+            <a href="{{ site.Params.github }}" target="_blank" rel="noreferrer">GitHub</a>
+            <a href="mailto:{{ site.Params.email }}">Email</a>
+          </div>
+        </div>
+        <div class="lab-footer-meta">
+          <p>&copy; {{ now.Year }} {{ site.Title }}</p>
+          <p>Built with Hugo</p>
+        </div>
+        {{ else }}
         <div class="footer-panel">
           <div class="footer-brand-block">
             <p class="footer-kicker">MVP Lab</p>
@@ -49,7 +95,6 @@
           <div class="footer-links" aria-label="Footer">
             <a href="{{ "/" | relURL }}">Home</a>
             <a href="{{ "/posts/" | relURL }}">Posts</a>
-            <a href="{{ "/projects/" | relURL }}">Projects</a>
             <a href="{{ "/about/" | relURL }}">About</a>
             <a href="{{ site.Params.github }}" target="_blank" rel="noreferrer">GitHub</a>
           </div>
@@ -58,8 +103,11 @@
             <p>Built with Hugo</p>
           </div>
         </div>
+        {{ end }}
       </div>
     </footer>
+    {{ if not $isLab }}
     <script src="{{ "js/grid.js" | relURL }}" defer></script>
+    {{ end }}
   </body>
 </html>

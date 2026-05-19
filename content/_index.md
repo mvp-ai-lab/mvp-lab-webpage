@@ -1,4 +1,4 @@
 +++
 title = "MVP Lab"
-description = "Research, people, and projects."
+description = "Research notes and build logs."
 +++

@@ -3,7 +3,31 @@ languageCode = "en-us"
 title = "MVP Lab"
 disableKinds = ["RSS", "taxonomy", "term"]
 
+[markup.goldmark.renderer]
+unsafe = true
+
 [params]
-description = "A minimal Hugo homepage for the lab."
-email = "hello@example.org"
+description = "Research notes and build logs from MVP Lab."
+email = "contact@mvp-lab.ai"
 github = "https://github.com/mvp-ai-lab"
+themeVariant = "lab"
+
+[params.labStyle]
+postsTitle = "Latest Posts"
+footerIntro = "Researching AI that can see it, say it, and sort it.\nFrom perception to understanding to action."
+
+[[params.labStyle.nav]]
+label = "Home"
+url = "/"
+
+[[params.labStyle.nav]]
+label = "Posts"
+url = "/posts/"
+
+[[params.labStyle.nav]]
+label = "About"
+url = "/about/"
+
+[[params.labStyle.nav]]
+label = "GitHub"
+url = "https://github.com/mvp-ai-lab"
