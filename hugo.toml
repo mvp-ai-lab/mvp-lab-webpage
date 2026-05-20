@@ -12,7 +12,7 @@ email = "contact@mvp-lab.ai"
 github = "https://github.com/mvp-ai-lab"
 
 [params.labStyle]
-postsTitle = "Latest Posts"
+postsTitle = "Last Posts"
 footerIntro = "Researching AI that can see it, say it, and sort it.\nFrom perception to understanding to action."
 
 [[params.labStyle.nav]]

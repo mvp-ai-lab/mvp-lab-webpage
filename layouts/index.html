@@ -27,7 +27,7 @@
   <section class="lab-section" id="posts">
     <div class="wrap">
       <div class="lab-section-header lab-section-header-simple">
-        <h2>{{ index $style "postsTitle" | default (index $style "poststitle") | default "Research notes and build logs" }}</h2>
+        <h2>{{ index $style "postsTitle" | default (index $style "poststitle") | default "Last Posts" }}</h2>
       </div>
       {{ if gt (len $posts) 0 }}
         <div class="lab-card-grid">
