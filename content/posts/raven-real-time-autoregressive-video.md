@@ -2,7 +2,7 @@
 title = "RAVEN: real-time autoregressive video extrapolation"
 date = 2026-05-19T18:19:00+01:00
 draft = false
-summary = "RAVEN is a training-time test framework for real-time autoregressive video diffusion, aligning training rollouts with inference-time history and adding CM-GRPO for online consistency-model optimization."
+summary = "RAVEN is a training-time test framework that repacks self rollouts into interleaved clean endpoints and noisy denoising states, with CM-GRPO applying group relative policy optimization directly on the consistency transition kernel."
 thumbnail = "/assets/posts/raven-real-time-autoregressive-video/thumbnail.png"
 topic = "Video Generation Research"
 github = "https://github.com/mvp-ai-lab/RAVEN"
@@ -14,69 +14,95 @@ featured_tag = "Research"
 featured_image = "/assets/posts/raven-real-time-autoregressive-video/thumbnail.png"
 +++
 
-`RAVEN` is a real-time autoregressive video extrapolation system. Its goal is
-not simply to generate a short clip, but to keep extending video in chunks while
-maintaining quality, motion, and semantic consistency over a longer horizon.
+`RAVEN` stands for the Real-time Autoregressive Video Extrapolation Network.
+The setting we care about is real-time streaming generation, where a causal
+autoregressive model has to extrapolate future chunks from previously
+generated content. To make this fast we distill from a high-fidelity
+bidirectional teacher into a competitive few-step model. And here the trouble
+starts. The history distributions seen during training never quite match the
+ones arising at inference, and that persistent gap is what constrains
+generation quality over long horizons.
 
-The project targets a specific failure mode in causal video diffusion
-distillation. At inference time, an autoregressive generator conditions on its
-own previously generated chunks. During training, however, many systems see
-cleaner or mismatched history distributions. That mismatch creates what the
-project calls a history supervision gap: the model is asked to extrapolate from
-history states it was not fully trained to use.
+To see where the gap comes from, walk through how existing paradigms construct
+the history their causal student sees. Teacher Forcing trains with real
+historical chunks. The supervision is clean, but the generator never sees its
+own test-time history. [Diffusion Forcing](https://arxiv.org/abs/2407.01392)
+and [CausVid](https://arxiv.org/abs/2412.07772) perturb ground-truth prefixes
+with an independently sampled noise level, so the training distribution still
+does not match inference and the discrepancy can accumulate across
+autoregressive rollouts. [Self Forcing](https://arxiv.org/abs/2506.08009)
+finally unrolls the generator at training time, yet reuses the historical
+cache as detached context. The history representations still receive no
+end-to-end supervision from subsequent chunk losses. We call this the history
+supervision gap.
 
 <figure class="article-media">
   <video class="article-video" controls muted autoplay loop playsinline poster="/assets/posts/raven-real-time-autoregressive-video/thumbnail.png">
     <source src="/assets/posts/raven-real-time-autoregressive-video/comparison-reel.mp4" type="video/mp4">
   </video>
-  <figcaption>RAVEN comparison reel from the project page, showing long-prompt video generation against causal baselines.</figcaption>
+  <figcaption>RAVEN comparison reel from our project page, showing long-prompt video generation against causal baselines.</figcaption>
 </figure>
 
-RAVEN addresses this by turning training into a training-time test. It rolls the
-model forward, then repacks each self rollout into an interleaved sequence of
-clean historical endpoints and noisy denoising states. This gives downstream
-chunk losses a path to supervise the history representations that future chunks
-will actually depend on.
+RAVEN closes this gap by turning training into a training-time test. We start
+from a self rollout of the few-step causal generator and repack that sampled
+trajectory into an interleaved sequence of clean historical endpoints and
+noisy denoising states. The clean rollout chunks supply the causal history for
+subsequent predictions and the noisy states from the same rollout remain the
+supervised denoising inputs. A single causal forward pass over this sequence
+then routes gradients from later chunks back through the cached history they
+actually depend on, without backpropagating through an entire autoregressive
+sampling trajectory. On top of this, a chunk-wise loss scaling gives more
+weight to later positions, since those condition on richer accumulated history
+and have to suppress error propagation. The whole design is inspired by the
+training-time test principle of [EAGLE-3](https://arxiv.org/abs/2503.01840).
+The idea is to train the model on the context it will produce and encounter
+at inference. For autoregressive video diffusion that turns out to be
+substantially more involved, because each chunk is the endpoint of a
+multi-step denoising trajectory and future chunks depend on the resulting
+cache.
 
-That framing is useful because it makes autoregressive video generation feel
-less like independent clip generation and more like a streaming system. The
-state carried forward matters. If the state drifts, all future chunks inherit
-the problem. If the state is trained under realistic rollout conditions, future
-prediction becomes less brittle.
+Our second contribution is `CM-GRPO`, short for Consistency-model Group
+Relative Policy Optimization. Prior flow-model RL such as
+[Flow-GRPO](https://arxiv.org/abs/2505.05470) converts the deterministic ODE
+into an auxiliary SDE via Euler-Maruyama discretization, but those stochastic
+transitions are absent from the ODE sampler used at inference. A consistency
+sampler is different. It inherently yields stochastic Gaussian transitions
+through its predicted clean endpoint. So we cast that consistency sampling
+step as a conditional Gaussian transition kernel and apply group relative
+policy optimization directly to this kernel. The policy interface now matches
+the sampler used at inference, with no auxiliary stochastic process. The two
+contributions are complementary. RAVEN aligns autoregressive training with
+inference-time extrapolation and CM-GRPO defines the policy objective on the
+same update rule used during generation.
 
-The second contribution is `CM-GRPO`, or Consistency-model Group Relative
-Policy Optimization. The method reformulates a consistency sampling step as a
-conditional Gaussian transition kernel, then applies online reinforcement
-learning directly to that kernel. The project positions this as a better match
-for the sampler interface used at inference than prior flow-model RL
-formulations that rely on an auxiliary Euler-Maruyama process.
-
-In practice, this gives the system two complementary levers:
-
-- RAVEN aligns autoregressive training with inference-time history.
-- CM-GRPO improves the consistency sampling kernel with online optimization.
-
-The project compares against recent causal video baselines including CausVid,
-LongLive, Rolling Forcing, Self Forcing, Reward Forcing, and Causal Forcing. The
-headline result is that RAVEN improves quality, semantic alignment, and dynamic
-degree metrics, with additional gains when CM-GRPO is applied on top.
+We compare against recent causal video distillation baselines on VBench,
+including [CausVid](https://arxiv.org/abs/2412.07772),
+[LongLive](https://arxiv.org/abs/2509.22622),
+[Rolling Forcing](https://arxiv.org/abs/2509.25161),
+[Self Forcing](https://arxiv.org/abs/2506.08009),
+[Reward Forcing](https://arxiv.org/abs/2512.04678) and
+[Causal Forcing](https://arxiv.org/abs/2602.02214). RAVEN surpasses every one
+of them across Total, Quality, Semantic and Dynamic Degree, and the largest
+margin lands on dynamic degree. Add CM-GRPO on top and we take the leading
+entry on every dimension.
 
 <figure class="article-media">
   <img src="/assets/posts/raven-real-time-autoregressive-video/preference.png" alt="RAVEN user preference study">
-  <figcaption>User study preference rates from the project page, where RAVEN is preferred against multiple short-video causal baselines.</figcaption>
+  <figcaption>User study preference rates from our project page, where RAVEN is preferred against multiple short-video causal baselines.</figcaption>
 </figure>
 
-The user study is also telling. The project evaluates 100 long and detailed
-prompts from baseline qualitative showcases, generating four samples per prompt
-for each method. Human raters compare RAVEN clips against baseline clips across
-quality, semantic alignment, and overall preference. RAVEN is preferred across
-all reported dimensions, with the strongest margin on semantic consistency.
+We also run a user study against the four short-video baselines, namely
+CausVid, Self Forcing, Reward Forcing and Causal Forcing. Across 100 long
+detailed prompts with 4 samples per method, RAVEN is preferred on Quality,
+Semantic and Overall against every one of them, with the strongest lead on
+Semantic.
 
-For builders, the interesting lesson is that real-time video generation is not
-only about fewer denoising steps. It is about making the training process see
-the same kind of imperfect generated history that inference will produce. Once
-the model is optimized around that history, streaming generation becomes a
-first-class objective rather than an afterthought.
+What ties both contributions together is one principle, applied on two sides.
+RAVEN pulls the history representation into training, so the model learns on
+the context it will actually see at inference. CM-GRPO pulls the policy
+interface onto the inference sampler, so the RL update operates on the same
+kernel that produces the output. The gains we report come from closing both
+gaps at once.
 
 Resources:
 
