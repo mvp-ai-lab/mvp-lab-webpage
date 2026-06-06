@@ -2,6 +2,7 @@
   {{ $style := index site.Params "labStyle" | default (index site.Params "labstyle") | default dict }}
   {{ $posts := where site.RegularPages.ByDate.Reverse "Section" "posts" }}
   {{ $featuredPosts := first 3 (where $posts "Params.featured" true) }}
+  {{ $positions := index $style "positions" | default (index $style "Positions") | default slice }}
   {{ if gt (len $featuredPosts) 0 }}
   <section class="lab-feature-wall" aria-label="Featured work">
     <div class="wrap">
@@ -40,4 +41,54 @@
       {{ end }}
     </div>
   </section>
+
+  {{ if gt (len $positions) 0 }}
+  <section class="lab-section lab-join-section" id="join" aria-labelledby="join-title">
+    <div class="wrap">
+      <div class="lab-section-header lab-section-header-simple">
+        <h2 id="join-title">Join MVP Lab</h2>
+      </div>
+      <div class="lab-position-grid">
+        {{ range $positions }}
+          {{ $title := index . "title" | default (index . "Title") }}
+          {{ $location := index . "location" | default (index . "Location") }}
+          {{ $workMode := index . "workMode" | default (index . "workmode") | default (index . "WorkMode") }}
+          {{ $summary := index . "summary" | default (index . "Summary") }}
+          {{ $focus := index . "focus" | default (index . "Focus") | default slice }}
+          {{ $requirements := index . "requirements" | default (index . "Requirements") | default slice }}
+          {{ $subject := printf "Application: %s" $title }}
+          <article class="lab-position-card">
+            <h3>{{ $title }}</h3>
+            {{ with $summary }}<p class="lab-position-summary">{{ . }}</p>{{ end }}
+            {{ if gt (len $focus) 0 }}
+              <div class="lab-position-block">
+                <p class="lab-position-block-title">Focus</p>
+                <ul>
+                  {{ range $focus }}<li>{{ . }}</li>{{ end }}
+                </ul>
+              </div>
+            {{ end }}
+            {{ if gt (len $requirements) 0 }}
+              <div class="lab-position-block">
+                <p class="lab-position-block-title">Requirements</p>
+                <ul>
+                  {{ range $requirements }}<li>{{ . }}</li>{{ end }}
+                </ul>
+              </div>
+            {{ end }}
+            <div class="lab-position-footer">
+              {{ if or $location $workMode }}
+                <p class="lab-position-meta">
+                  {{ with $location }}<span class="lab-position-location" aria-label="Location: {{ . }}">{{ . }}</span>{{ end }}
+                  {{ with $workMode }}<span class="lab-position-work-mode" aria-label="Work mode: {{ . }}">{{ . }}</span>{{ end }}
+                </p>
+              {{ end }}
+              <a class="lab-position-link" href="mailto:{{ site.Params.email }}?subject={{ $subject | urlquery }}">Apply now ↗</a>
+            </div>
+          </article>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+  {{ end }}
 {{ end }}

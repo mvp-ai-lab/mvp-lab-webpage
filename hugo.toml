@@ -24,9 +24,29 @@ label = "Posts"
 url = "/posts/"
 
 [[params.labStyle.nav]]
+label = "Join"
+url = "/#join"
+
+[[params.labStyle.nav]]
 label = "About"
 url = "/about/"
 
 [[params.labStyle.nav]]
 label = "GitHub"
 url = "https://github.com/mvp-ai-lab"
+
+[[params.labStyle.positions]]
+title = "Research Intern"
+location = "London"
+workMode = "On-site"
+summary = "Work on VLM, LLM, multimodal data, and AI infrastructure for practical, high-performing model systems."
+focus = ["Explore multimodal model architectures, efficient training/inference, alignment, and long-context understanding.", "Build high-quality multimodal datasets across image, video, audio, and text.", "Turn research into stronger intelligent assistant and content creation experiences."]
+requirements = ["Strong coding ability and practical engineering implementation skills.", "Ability to write reliable ML code and use agentic coding tools effectively.", "Long-term commitment to AGI and active exploration of frontier multimodal technologies."]
+
+[[params.labStyle.positions]]
+title = "Engineer Scientist"
+location = "London"
+workMode = "On-site"
+summary = "Build scalable VLM/LLM training, evaluation, data pipelines, and infra for multimodal AI systems."
+focus = ["Advance model architecture, efficient training/inference, multimodal alignment, and long-context capabilities.", "Own large-scale multimodal data processing and high-quality dataset construction.", "Drive product impact in intelligent assistants, creative tools, and other core AI experiences."]
+requirements = ["Strong coding ability, systems design, and reliable ML implementation.", "Deep understanding of large-model frameworks such as PyTorch and distributed training stacks.", "Ability to optimize model architectures, training pipelines, and inference performance.", "Hands-on LLM/VLM training, large-scale infra, or high-impact CV/NLP/multimodal project experience is strongly preferred."]
