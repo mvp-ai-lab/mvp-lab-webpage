@@ -36,17 +36,19 @@ label = "GitHub"
 url = "https://github.com/mvp-ai-lab"
 
 [[params.labStyle.positions]]
-title = "Research Intern"
+title = "MLLM Research"
 location = "London"
 workMode = "On-site"
-summary = "Work on VLM, LLM, multimodal data, and AI infrastructure for practical, high-performing model systems."
-focus = ["Explore multimodal model architectures, efficient training/inference, alignment, and long-context understanding.", "Build high-quality multimodal datasets across image, video, audio, and text.", "Turn research into stronger intelligent assistant and content creation experiences."]
-requirements = ["Strong coding ability and practical engineering implementation skills.", "Ability to write reliable ML code and use agentic coding tools effectively.", "Long-term commitment to AGI and active exploration of frontier multimodal technologies."]
+openRoles = ["Intern", "Full-time"]
+summary = "Work on MLLM training, model architecture, and open-source training framework optimization for frontier multimodal systems."
+focus = ["Optimize open-source MLLM training frameworks and training workflows.", "Train and improve ViT and MLLM models.", "Explore efficient training/inference, long-context understanding, and data-driven model improvement."]
+requirements = ["Strong coding ability and practical engineering implementation skills.", "Reliable ML code and effective use of agentic coding tools.", "Long-term commitment to AGI and active exploration of frontier multimodal technologies.", "ViT, LLM, VLM, or MLLM training experience is a plus."]
 
 [[params.labStyle.positions]]
-title = "Engineer Scientist"
+title = "Infra Engineering"
 location = "London"
 workMode = "On-site"
-summary = "Build scalable VLM/LLM training, evaluation, data pipelines, and infra for multimodal AI systems."
-focus = ["Advance model architecture, efficient training/inference, multimodal alignment, and long-context capabilities.", "Own large-scale multimodal data processing and high-quality dataset construction.", "Drive product impact in intelligent assistants, creative tools, and other core AI experiences."]
-requirements = ["Strong coding ability, systems design, and reliable ML implementation.", "Deep understanding of large-model frameworks such as PyTorch and distributed training stacks.", "Ability to optimize model architectures, training pipelines, and inference performance.", "Hands-on LLM/VLM training, large-scale infra, or high-impact CV/NLP/multimodal project experience is strongly preferred."]
+openRoles = ["Intern", "Full-time"]
+summary = "Build the systems layer that makes MLLM training, serving, and model engineering efficient at scale."
+focus = ["Improve GPU, cluster, and training infrastructure utilization.", "Deploy MLLM models efficiently as reliable online services.", "Build model engineering support for training pipelines, evaluation, serving, and production iteration."]
+requirements = ["Strong coding ability, systems design, and reliable implementation.", "Deep understanding of large-model frameworks such as PyTorch and distributed training stacks.", "Experience optimizing model architecture, training pipelines, inference performance, or infrastructure is strongly preferred.", "Large-scale training, GPU systems, cluster scheduling, or online model serving experience is a plus."]

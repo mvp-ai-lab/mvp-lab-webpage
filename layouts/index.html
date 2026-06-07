@@ -54,6 +54,7 @@
           {{ $location := index . "location" | default (index . "Location") }}
           {{ $workMode := index . "workMode" | default (index . "workmode") | default (index . "WorkMode") }}
           {{ $summary := index . "summary" | default (index . "Summary") }}
+          {{ $openRoles := index . "openRoles" | default (index . "openroles") | default (index . "OpenRoles") | default slice }}
           {{ $focus := index . "focus" | default (index . "Focus") | default slice }}
           {{ $requirements := index . "requirements" | default (index . "Requirements") | default slice }}
           {{ $subject := printf "Application: %s" $title }}
@@ -77,10 +78,15 @@
               </div>
             {{ end }}
             <div class="lab-position-footer">
-              {{ if or $location $workMode }}
-                <p class="lab-position-meta">
+              {{ if or (gt (len $openRoles) 0) $location $workMode }}
+                <p class="lab-position-meta" aria-label="Open roles and work details">
+                  {{ if gt (len $openRoles) 0 }}
+                    <span class="lab-position-roles" aria-label="Open roles">{{ delimit $openRoles " / " }}</span>
+                    {{ if or $location $workMode }}<span class="lab-position-separator" aria-hidden="true">·</span>{{ end }}
+                  {{ end }}
                   {{ with $location }}<span class="lab-position-location" aria-label="Location: {{ . }}">{{ . }}</span>{{ end }}
-                  {{ with $workMode }}<span class="lab-position-work-mode" aria-label="Work mode: {{ . }}">{{ . }}</span>{{ end }}
+                  {{ if and $location $workMode }}<span class="lab-position-separator" aria-hidden="true">·</span>{{ end }}
+                  {{ with $workMode }}<span class="lab-position-mode" aria-label="Work mode: {{ . }}">{{ . }}</span>{{ end }}
                 </p>
               {{ end }}
               <a class="lab-position-link" href="mailto:{{ site.Params.email }}?subject={{ $subject | urlquery }}">Apply now ↗</a>
