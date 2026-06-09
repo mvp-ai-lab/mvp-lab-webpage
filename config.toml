@@ -1,4 +1,4 @@
-baseURL = "https://example.org/"
+baseURL = "https://www.mvp-lab.ai/"
 languageCode = "en-us"
 title = "MVP Lab"
 disableKinds = ["RSS", "taxonomy", "term", "taxonomyTerm"]
@@ -7,7 +7,7 @@ disableKinds = ["RSS", "taxonomy", "term", "taxonomyTerm"]
 unsafe = true
 
 [params]
-description = "Research notes and build logs from MVP Lab."
+description = "MVP Lab is a multimodal AI research lab working on MLLM training, long-video understanding, real-time generation, and AI infrastructure."
 email = "contact@mvp-lab.ai"
 github = "https://github.com/mvp-ai-lab"
 
