@@ -592,6 +592,94 @@ h2 {
   text-decoration: underline;
 }
 
+.lab-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.35rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid rgba(13, 13, 13, 0.14);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 650;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.lab-button:hover,
+.lab-button:focus-visible {
+  border-color: rgba(13, 13, 13, 0.24);
+  background: #f7f7f5;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.lab-jd-page {
+  padding-top: 5rem;
+}
+
+.lab-jd-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  max-width: none;
+  margin-bottom: 2rem;
+}
+
+.lab-jd-principle {
+  max-width: none;
+  margin: 0;
+  padding: 1rem 1.1rem;
+  border: 1px solid rgba(13, 13, 13, 0.08);
+  border-radius: 10px;
+  background: #ffffff;
+  color: var(--muted);
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  font-weight: 500;
+  line-height: 1.52;
+}
+
+.lab-jd-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.lab-jd-card {
+  padding: 1.35rem;
+  border: 1px solid rgba(13, 13, 13, 0.09);
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.lab-jd-card-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: start;
+}
+
+.lab-jd-card h2 {
+  margin: 0;
+  font-size: clamp(1.25rem, 1.9vw, 1.7rem);
+  line-height: 1.12;
+  letter-spacing: 0;
+  font-weight: 600;
+}
+
+.lab-jd-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.lab-jd-benefits {
+  padding-top: 1rem;
+  border-top: 1px solid rgba(13, 13, 13, 0.08);
+}
+
 .lab-card-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1031,6 +1119,15 @@ h2 {
 
   .lab-position-card {
     padding: 1rem;
+  }
+
+  .lab-jd-card-header,
+  .lab-jd-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .lab-jd-card .lab-button {
+    width: 100%;
   }
 
   .lab-footer-grid {

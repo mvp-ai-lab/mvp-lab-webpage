@@ -25,7 +25,7 @@ url = "/posts/"
 
 [[params.labStyle.nav]]
 label = "Join"
-url = "/#join"
+url = "/join/"
 
 [[params.labStyle.nav]]
 label = "About"
@@ -38,17 +38,17 @@ url = "https://github.com/mvp-ai-lab"
 [[params.labStyle.positions]]
 title = "MLLM Research"
 location = "London"
-workMode = "On-site"
+workMode = "On-site / Hybrid"
 openRoles = ["Intern", "Full-time"]
 summary = "Work on MLLM training, model architecture, and open-source training framework optimization for frontier multimodal systems."
-focus = ["Optimize open-source MLLM training frameworks and training workflows.", "Train and improve ViT and MLLM models.", "Explore efficient training/inference, long-context understanding, and data-driven model improvement."]
-requirements = ["Strong coding ability and practical engineering implementation skills.", "Reliable ML code and effective use of agentic coding tools.", "Long-term commitment to AGI and active exploration of frontier multimodal technologies.", "ViT, LLM, VLM, or MLLM training experience is a plus."]
+focus = ["Research on ViT and MLLM models.", "Reasoning multimodal models.", "Large scale model training."]
+requirements = ["Strong coding ability and practical engineering implementation skills.", "Long-term commitment to AGI and active exploration of frontier multimodal technologies.", "Large scale ViT, LLM, VLM, or MLLM training experience is a plus."]
 
 [[params.labStyle.positions]]
-title = "Infra Engineering"
+title = "MLLM Infra Engineering"
 location = "London"
-workMode = "On-site"
+workMode = "On-site / Hybrid"
 openRoles = ["Intern", "Full-time"]
-summary = "Build the systems layer that makes MLLM training, serving, and model engineering efficient at scale."
-focus = ["Improve GPU, cluster, and training infrastructure utilization.", "Deploy MLLM models efficiently as reliable online services.", "Build model engineering support for training pipelines, evaluation, serving, and production iteration."]
+summary = "Build the systems/frameworks that makes MLLM training, serving, and model engineering easy-to-use and efficient at scale."
+focus = ["Build scalable training infrastructure for multimodal models.", "Optimize GPU utilization, cluster scheduling, large scale cluster performance, and end-to-end training throughput across large-scale MLLM workloads.", "Develop reliable model engineering systems for evaluation, inference, deployment, and fast iteration from research prototypes to production services."]
 requirements = ["Strong coding ability, systems design, and reliable implementation.", "Deep understanding of large-model frameworks such as PyTorch and distributed training stacks.", "Experience optimizing model architecture, training pipelines, inference performance, or infrastructure is strongly preferred.", "Large-scale training, GPU systems, cluster scheduling, or online model serving experience is a plus."]
