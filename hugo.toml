@@ -24,9 +24,31 @@ label = "Posts"
 url = "/posts/"
 
 [[params.labStyle.nav]]
+label = "Join"
+url = "/join/"
+
+[[params.labStyle.nav]]
 label = "About"
 url = "/about/"
 
 [[params.labStyle.nav]]
 label = "GitHub"
 url = "https://github.com/mvp-ai-lab"
+
+[[params.labStyle.positions]]
+title = "MLLM Research"
+location = "London"
+workMode = "On-site / Hybrid"
+openRoles = ["Intern", "Full-time"]
+summary = "Work on MLLM training, model architecture, and open-source training framework optimization for frontier multimodal systems."
+focus = ["Research on ViT and MLLM models.", "Reasoning multimodal models.", "Large scale model training."]
+requirements = ["Strong coding ability and practical engineering implementation skills.", "Long-term commitment to AGI and active exploration of frontier multimodal technologies.", "Large scale ViT, LLM, VLM, or MLLM training experience is a plus."]
+
+[[params.labStyle.positions]]
+title = "MLLM Infra Engineering"
+location = "London"
+workMode = "On-site / Hybrid"
+openRoles = ["Intern", "Full-time"]
+summary = "Build the systems/frameworks that makes MLLM training, serving, and model engineering easy-to-use and efficient at scale."
+focus = ["Build scalable training infrastructure for multimodal models.", "Optimize GPU utilization, cluster scheduling, large scale cluster performance, and end-to-end training throughput across large-scale MLLM workloads.", "Develop reliable model engineering systems for evaluation, inference, deployment, and fast iteration from research prototypes to production services."]
+requirements = ["Strong coding ability, systems design, and reliable implementation.", "Deep understanding of large-model frameworks such as PyTorch and distributed training stacks.", "Experience optimizing model architecture, training pipelines, inference performance, or infrastructure is strongly preferred.", "Large-scale training, GPU systems, cluster scheduling, or online model serving experience is a plus."]

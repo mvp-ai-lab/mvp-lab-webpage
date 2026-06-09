@@ -1,0 +1,30 @@
+{{ define "main" }}
+  <section class="lab-section lab-about-page" aria-labelledby="about-title">
+    <div class="wrap">
+      <div class="lab-section-header lab-about-header">
+        <h1 id="about-title">{{ .Title }}</h1>
+        <p class="lab-about-lede">From reproducible MLLM training to long-video understanding and real-time generation, we turn frontier multimodal research into working systems.</p>
+      </div>
+
+      <div class="lab-about-grid">
+        <article class="lab-about-main">
+          {{ .Content }}
+        </article>
+
+        <aside class="lab-about-aside" aria-label="Lab profile">
+          <div class="lab-about-fact">
+            <p class="lab-position-block-title">Director</p>
+            <a href="https://jiankangdeng.github.io/" target="_blank" rel="noreferrer">Jiankang Deng</a>
+            <span>Assistant Professor in Computing, Imperial College London</span>
+          </div>
+          <div class="lab-about-fact">
+            <p class="lab-position-block-title">Research Areas</p>
+            <span>Multimodal foundation models</span>
+            <span>Physical-world generation</span>
+            <span>Computer vision and real-world AI</span>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+{{ end }}

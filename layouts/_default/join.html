@@ -1,0 +1,81 @@
+{{ define "main" }}
+  {{ $style := index site.Params "labStyle" | default (index site.Params "labstyle") | default dict }}
+  {{ $positions := index $style "positions" | default (index $style "Positions") | default slice }}
+  <section class="lab-section lab-jd-page" aria-labelledby="join-page-title">
+    <div class="wrap">
+      <div class="lab-section-header lab-jd-header">
+        <h1 id="join-page-title">Join MVP Lab</h1>
+        <p class="lab-jd-principle">We do not judge candidates by pedigree or a single metric such as paper count. We care about your ability to solve hard problems, build strong technical systems, and show exceptional work in any form, from research to outstanding open-source projects.</p>
+      </div>
+
+      {{ if gt (len $positions) 0 }}
+        <div class="lab-jd-list">
+          {{ range $positions }}
+            {{ $title := index . "title" | default (index . "Title") }}
+            {{ $location := index . "location" | default (index . "Location") }}
+            {{ $workMode := index . "workMode" | default (index . "workmode") | default (index . "WorkMode") }}
+            {{ $summary := index . "summary" | default (index . "Summary") }}
+            {{ $openRoles := index . "openRoles" | default (index . "openroles") | default (index . "OpenRoles") | default slice }}
+            {{ $focus := index . "focus" | default (index . "Focus") | default slice }}
+            {{ $requirements := index . "requirements" | default (index . "Requirements") | default slice }}
+            {{ $subject := printf "Application: %s" $title }}
+            <article class="lab-jd-card" id="{{ $title | urlize }}">
+              <div class="lab-jd-card-header">
+                <div>
+                  <h2>{{ $title }}</h2>
+                  {{ with $summary }}<p class="lab-position-summary">{{ . }}</p>{{ end }}
+                </div>
+                {{ if or (gt (len $openRoles) 0) $location $workMode }}
+                  <p class="lab-position-meta" aria-label="Open roles and work details">
+                    {{ if gt (len $openRoles) 0 }}
+                      <span class="lab-position-roles" aria-label="Open roles">{{ delimit $openRoles " / " }}</span>
+                      {{ if or $location $workMode }}<span class="lab-position-separator" aria-hidden="true">·</span>{{ end }}
+                    {{ end }}
+                    {{ with $location }}<span class="lab-position-location" aria-label="Location: {{ . }}">{{ . }}</span>{{ end }}
+                    {{ if and $location $workMode }}<span class="lab-position-separator" aria-hidden="true">·</span>{{ end }}
+                    {{ with $workMode }}<span class="lab-position-mode" aria-label="Work mode: {{ . }}">{{ . }}</span>{{ end }}
+                  </p>
+                {{ end }}
+              </div>
+
+              <div class="lab-jd-columns">
+                {{ if gt (len $focus) 0 }}
+                  <div class="lab-position-block">
+                    <p class="lab-position-block-title">Focus</p>
+                    <ul>
+                      {{ range $focus }}<li>{{ . }}</li>{{ end }}
+                    </ul>
+                  </div>
+                {{ end }}
+                {{ if gt (len $requirements) 0 }}
+                  <div class="lab-position-block">
+                    <p class="lab-position-block-title">Requirements</p>
+                    <ul>
+                      {{ range $requirements }}<li>{{ . }}</li>{{ end }}
+                    </ul>
+                  </div>
+                {{ end }}
+              </div>
+
+              <div class="lab-position-block lab-jd-benefits">
+                <p class="lab-position-block-title">Salary & Benefits</p>
+                <ul>
+                  <li>Base salary of GBP 80K-120K, with individually negotiated packages for exceptional candidates.</li>
+                  <li>Annual performance bonus.</li>
+                  <li>Healthy work-life balance.</li>
+                  <li>Rich collaboration opportunities with frontier labs.</li>
+                </ul>
+              </div>
+
+              <div class="lab-position-footer">
+                <a class="lab-button" href="mailto:{{ site.Params.email }}?subject={{ $subject | urlquery }}">Apply now</a>
+              </div>
+            </article>
+          {{ end }}
+        </div>
+      {{ else }}
+        <p class="posts-empty">No open roles are listed right now.</p>
+      {{ end }}
+    </div>
+  </section>
+{{ end }}

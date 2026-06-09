@@ -2,6 +2,7 @@
   {{ $style := index site.Params "labStyle" | default (index site.Params "labstyle") | default dict }}
   {{ $posts := where site.RegularPages.ByDate.Reverse "Section" "posts" }}
   {{ $featuredPosts := first 3 (where $posts "Params.featured" true) }}
+  {{ $positions := index $style "positions" | default (index $style "Positions") | default slice }}
   {{ if gt (len $featuredPosts) 0 }}
   <section class="lab-feature-wall" aria-label="Featured work">
     <div class="wrap">
@@ -40,4 +41,44 @@
       {{ end }}
     </div>
   </section>
+
+  {{ if gt (len $positions) 0 }}
+  <section class="lab-section lab-join-section" id="join" aria-labelledby="join-title">
+    <div class="wrap">
+      <div class="lab-section-header lab-section-header-simple">
+        <h2 id="join-title">Open Roles</h2>
+      </div>
+      <div class="lab-position-grid">
+        {{ range $positions }}
+          {{ $title := index . "title" | default (index . "Title") }}
+          {{ $location := index . "location" | default (index . "Location") }}
+          {{ $workMode := index . "workMode" | default (index . "workmode") | default (index . "WorkMode") }}
+          {{ $summary := index . "summary" | default (index . "Summary") }}
+          {{ $openRoles := index . "openRoles" | default (index . "openroles") | default (index . "OpenRoles") | default slice }}
+          {{ $focus := index . "focus" | default (index . "Focus") | default slice }}
+          {{ $requirements := index . "requirements" | default (index . "Requirements") | default slice }}
+          {{ $subject := printf "Application: %s" $title }}
+          <article class="lab-position-card">
+            <h3>{{ $title }}</h3>
+            {{ with $summary }}<p class="lab-position-summary">{{ . }}</p>{{ end }}
+            <div class="lab-position-footer">
+              {{ if or (gt (len $openRoles) 0) $location $workMode }}
+                <p class="lab-position-meta" aria-label="Open roles and work details">
+                  {{ if gt (len $openRoles) 0 }}
+                    <span class="lab-position-roles" aria-label="Open roles">{{ delimit $openRoles " / " }}</span>
+                    {{ if or $location $workMode }}<span class="lab-position-separator" aria-hidden="true">·</span>{{ end }}
+                  {{ end }}
+                  {{ with $location }}<span class="lab-position-location" aria-label="Location: {{ . }}">{{ . }}</span>{{ end }}
+                  {{ if and $location $workMode }}<span class="lab-position-separator" aria-hidden="true">·</span>{{ end }}
+                  {{ with $workMode }}<span class="lab-position-mode" aria-label="Work mode: {{ . }}">{{ . }}</span>{{ end }}
+                </p>
+              {{ end }}
+              <a class="lab-position-link" href="{{ printf "/join/#%s" ($title | urlize) | relURL }}">View details</a>
+            </div>
+          </article>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+  {{ end }}
 {{ end }}
